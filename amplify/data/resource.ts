@@ -25,7 +25,6 @@ export const data = defineData({
       expiresInDays: 30,
     },
   },
-  name: "MyAppNrperry-API"
 });
 
 /*== STEP 2 ===============================================================
