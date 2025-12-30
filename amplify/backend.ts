@@ -7,16 +7,15 @@ const backend = defineBackend({
   data,
 });
 
-// Naming convention function
-const applyNaming = (resourceType: string, resourceName: string) => 
-  `MyAppNrperry-${resourceType}-${resourceName}`;
+// Get branch name for naming convention
+const branchName = process.env.AWS_BRANCH || 'local';
 
-// Apply to all DynamoDB tables
-Object.keys(backend.data.resources.tables).forEach(tableName => {
-  backend.data.resources.tables[tableName].tableName = applyNaming("Table", tableName);
-});
+// Apply naming convention to DynamoDB tables
+const { cfnResources } = backend.data.resources;
 
-// Apply to Auth resources
-backend.auth.resources.userPool.userPoolName = applyNaming("UserPool", "Main");
-backend.auth.resources.userPoolClient.clientName = applyNaming("UserPoolClient", "Main");
+// Rename the Todo table
+cfnResources.amplifyDynamoDbTables["Todo"].tableName = `MyAppNrperry-${branchName}-Todo-Table`;
+
+// Rename the GraphQL API
+cfnResources.cfnGraphqlApi.name = `MyAppNrperry-${branchName}-API`;
 
